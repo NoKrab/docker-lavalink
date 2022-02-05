@@ -21,6 +21,6 @@ jobs:
       - name: push image
         run: |
           docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_TOKEN }}
-          docker push {{ secrets.DOCKER_USER }}/lavalink:${GITHUB_REF##*/}
+          docker push ${{ secrets.DOCKER_USER }}/lavalink:${GITHUB_REF##*/}
           docker logout
       
