@@ -18,9 +18,12 @@ jobs:
         run: echo running on branch ${GITHUB_REF##*/}
       - name: Build the Docker image
         run: docker build --tag ${{ secrets.DOCKER_USER }}/lavalink:${GITHUB_REF##*/} .
-      - name: push image
-        run: |
-          docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_TOKEN }}
-          docker push ${{ secrets.DOCKER_USER }}/lavalink:${GITHUB_REF##*/}
-          docker logout
+      - name: docker login
+        run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_TOKEN }}
+      - name: docker push
+        continue-on-error: true
+        run: docker push ${{ secrets.DOCKER_USER }}/lavalink:${GITHUB_REF##*/}
+      - name: docker logout
+        run: docker logout
+        
       
