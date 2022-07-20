@@ -1,0 +1,10 @@
+FROM ibm-semeru-runtimes:open-11-jdk AS builder
+WORKDIR /build/Lavalink
+COPY . /build
+RUN ./gradlew build
+
+FROM gcr.io/distroless/java11-debian11
+WORKDIR /app
+COPY --from=builder /build/Lavalink/LavalinkServer/build/libs/Lavalink.jar .
+ENTRYPOINT ["/usr/bin/java", "-Djdk.tls.client.protocols=TLSv1.2,TLSv1.3", "-jar"]
+CMD ["Lavalink.jar"]
